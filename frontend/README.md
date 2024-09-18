@@ -29,8 +29,8 @@ This template arose out of a need to unite all the above libraries, which were n
 
 ## Usage
 
-
 If you are using either Yarn or NPM run the command bellow
+
 ```bash
 npx degit potreco/viterc my-app
 
@@ -45,6 +45,7 @@ yarn dev
 ```
 
 If you are using Bun
+
 ```bash
 bun create potreco/viterc/bun my-app
 

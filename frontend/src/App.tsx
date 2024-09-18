@@ -1,22 +1,69 @@
-import { useState } from 'react';
-import './App.css';
-import Header from '@/Components/Header';
-import ReadTheDocs from '@/Components/ReadTheDocs';
+import {
+  ReactFlow,
+  Controls,
+  Background,
+  MiniMap,
+  useNodesState,
+  useEdgesState,
+  ReactFlowProvider,
+  useReactFlow,
+} from '@xyflow/react';
 
-const App: React.FC = () => {
-  const [count, setCount] = useState(0);
+import '@xyflow/react/dist/style.css';
+import './index.css';
+
+import { nodes as elkInitNodes } from './data/elkNodes';
+import { nodes as tsInitNodes } from './data/tsNodes';
+import { edges as elkInitEdges } from './data/elkEdges';
+import useLayoutNodes from './useLayoutNodes';
+import CustomNode from './renderer/Components/CustomNode';
+import ElkNode from './ElkNode';
+import TsNode from './TsNode';
+
+const nodeTypes = {
+  elk: ElkNode,
+  custom: CustomNode,
+  ts: TsNode,
+};
+
+const initNodes = [...elkInitNodes, ...tsInitNodes];
+const initEdges = elkInitEdges;
+
+const FlowMap = () => {
+  const [nodes, , onNodesChange] = useNodesState(initNodes);
+  const [edges, , onEdgesChange] = useEdgesState(initEdges);
+
+  useLayoutNodes();
+
+  const a = useReactFlow();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const res = a.toObject();
+  // console.log('nodes');
+  // console.log(nodes);
+  // console.log('res');
+  // console.log(res);
 
   return (
-    <div className="App">
-      <Header />
-      <div className="card">
-        <button type="button" onClick={() => setCount(count + 1)}>
-          count is {count}
-        </button>
-      </div>
-      <ReadTheDocs />
-    </div>
+    <ReactFlow
+      nodes={nodes}
+      onNodesChange={onNodesChange}
+      edges={edges}
+      onEdgesChange={onEdgesChange}
+      fitView
+      nodeTypes={nodeTypes}
+    >
+      <Background />
+      <Controls />
+      <MiniMap />
+    </ReactFlow>
   );
 };
 
-export default App;
+// eslint-disable-next-line react-refresh/only-export-components, import/prefer-default-export
+export const App = () => (
+  <ReactFlowProvider>
+    <div className="App" style={{ height: '100vh', width: '100vw' }}>
+      <FlowMap />
+    </div>
+  </ReactFlowProvider>
+);
