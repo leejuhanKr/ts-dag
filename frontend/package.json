@@ -21,6 +21,8 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@headlessui/react": "^2.1.9",
+    "@heroicons/react": "^2.1.5",
     "@xyflow/react": "^12.3.0",
     "autoprefixer": "^10.4.20",
     "elkjs": "^0.9.3",

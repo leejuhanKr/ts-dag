@@ -1,14 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-// {
-//     item_no: 122997,
-//     item_name: '스탠리 클래식 런치박스',
-//     detail_image_url: 'https://img.29cm.co.kr/contents/itemDetail/201702/cut4_320170216150109.jpg?width=500',
-//     price: 75000,
-//     score: 200,
-//   },
-
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import productItems from '../data/api-data/productItem';
+import { Pagination } from '../Component/Pagination';
 
 interface ProductData {
   item_no: number;
@@ -56,18 +50,14 @@ const ProductCard = ({ item }: { item: ProductData }) => {
 };
 
 const ProductPage = () => {
-  const [pageNumber, setPageNumber] = useState(1);
   const [productData, setProductData] = useState<ProductData[]>([]);
 
-  const onPageDown = () => {
-    setPageNumber((prev) => {
-      if (prev === 1) return prev;
-      return prev - 1;
-    });
-  };
-  const onPageUp = () => {
-    setPageNumber((prev) => prev + 1);
-  };
+  const useQuery = () => new URLSearchParams(useLocation().search);
+
+  const query = useQuery();
+  const page = query.get('page');
+  const initialPageNumber = page ? parseInt(page, 10) : 1;
+  const pageNumber = initialPageNumber;
 
   useEffect(() => {
     const getProductData = async () => {
@@ -75,27 +65,20 @@ const ProductPage = () => {
       setProductData(data);
     };
     getProductData();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [pageNumber]);
 
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-        <h2 className="text-2xl font-bold tracking-tight text-gray-900">Customers also purchased</h2>
+        <h2 className="text-2xl font-bold tracking-tight text-gray-900">Shopping List</h2>
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {productData.map((item) => (
             <ProductCard key={item.item_no} item={item} />
           ))}
         </div>
       </div>
-      <div className="flex justify-center gap-3">
-        <button type="button" onClick={onPageDown}>
-          {'<'}
-        </button>
-        <div>{pageNumber}</div>
-        <button type="button" onClick={onPageUp}>
-          {'>'}
-        </button>
-      </div>
+      <Pagination />
     </div>
   );
 };

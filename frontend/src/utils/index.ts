@@ -45,3 +45,7 @@ export function analyzeTsArrowFunction<T extends (...args: any[]) => any>(func: 
     returnType,
   };
 }
+
+export function classNames(...classes: (string | boolean | undefined | null)[]) {
+  return classes.filter((v) => typeof v === 'string' && v.length).join(' ');
+}
