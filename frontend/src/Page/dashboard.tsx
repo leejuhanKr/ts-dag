@@ -19,6 +19,7 @@ import useLayoutNodes from '../useLayoutNodes';
 import CustomNode from '../renderer/Components/CustomNode';
 import ElkNode from '../ElkNode';
 import TsNode from '../TsNode';
+import ModuleForm from '../Component/ModuleForm';
 
 const nodeTypes = {
   elk: ElkNode,
@@ -40,18 +41,22 @@ const FlowMap = () => {
   const res = a.toObject();
 
   return (
-    <ReactFlow
-      nodes={nodes}
-      onNodesChange={onNodesChange}
-      edges={edges}
-      onEdgesChange={onEdgesChange}
-      fitView
-      nodeTypes={nodeTypes}
-    >
-      <Background />
-      <Controls />
-      <MiniMap />
-    </ReactFlow>
+    <>
+      <ModuleForm />
+      <ReactFlow
+        className="schema-form"
+        nodes={nodes}
+        onNodesChange={onNodesChange}
+        edges={edges}
+        onEdgesChange={onEdgesChange}
+        fitView
+        nodeTypes={nodeTypes}
+      >
+        <Background />
+        <Controls />
+        <MiniMap />
+      </ReactFlow>
+    </>
   );
 };
 
